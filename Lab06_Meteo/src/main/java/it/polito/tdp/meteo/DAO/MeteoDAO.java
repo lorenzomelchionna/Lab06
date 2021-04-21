@@ -15,9 +15,10 @@ public class MeteoDAO {
 
 		final String sql = "SELECT Localita, Data, Umidita FROM situazione ORDER BY data ASC";
 
-		List<Rilevamento> rilevamenti = new ArrayList<Rilevamento>();
+		List<Rilevamento> Rilevamenti = new ArrayList<Rilevamento>();
 
 		try {
+			
 			Connection conn = ConnectDB.getConnection();
 			PreparedStatement st = conn.prepareStatement(sql);
 
@@ -26,22 +27,57 @@ public class MeteoDAO {
 			while (rs.next()) {
 
 				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("Data"), rs.getInt("Umidita"));
-				rilevamenti.add(r);
+				Rilevamenti.add(r);
+				
 			}
 
 			conn.close();
-			return rilevamenti;
+			return Rilevamenti;
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 			throw new RuntimeException(e);
+			
 		}
+		
 	}
 
 	public List<Rilevamento> getAllRilevamentiLocalitaMese(int mese, String localita) {
-
-		return null;
+		
+		final String sql = "SELECT Localita, Data, Umidita "
+				+ "FROM situazione "
+				+ "WHERE Localita=? AND MONTH(DATA)=?";
+		
+		List<Rilevamento> Rilevamenti = new ArrayList<Rilevamento>();
+		
+		try {
+			
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			
+			st.setString(1, localita);
+			st.setInt(2, mese);
+			
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next()) {
+				
+				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("Data"), rs.getInt("Umidita"));
+				Rilevamenti.add(r);
+				
+			}
+			
+			conn.close();
+			return Rilevamenti;
+			
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+			throw new RuntimeException(e);
+			
+		}
+		
 	}
 
 

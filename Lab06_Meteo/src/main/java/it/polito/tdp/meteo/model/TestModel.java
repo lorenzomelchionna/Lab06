@@ -10,7 +10,12 @@ public class TestModel {
 		
 		System.out.println(m.trovaSequenza(5));
 		
-
+		System.out.println(m.costoSequenzaMigliore);
+		
+		System.out.println(m.trovaSequenza(10));
+		
+		System.out.println(m.costoSequenzaMigliore);
+		
 	}
 
 }
