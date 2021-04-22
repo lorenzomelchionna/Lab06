@@ -2,6 +2,7 @@ package it.polito.tdp.meteo.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class Model {
 	
 	private Map<Integer,String> Mesi = new LinkedHashMap<Integer,String>();
 	
-	private List<Citta> CittaDiPartenza = new ArrayList<>();
+	private Set<Citta> CittaDiPartenza = new HashSet<>();
 	private List<Citta> SequenzaMigliore;
 	int costoSequenzaMigliore;
 	int giorniConsecutivi;
@@ -43,8 +44,8 @@ public class Model {
 		Mesi.put(12, "Dicembre");
 		
 		CittaDiPartenza.add(new Citta("Genova"));
-		CittaDiPartenza.add(new Citta("Torino"));
 		CittaDiPartenza.add(new Citta("Milano"));
+		CittaDiPartenza.add(new Citta("Torino"));
 		
 	}
 	
@@ -138,6 +139,7 @@ public class Model {
 					parziale.add(c);
 					cercaSequenza(parziale, livello+1, mese);
 					parziale.remove(c);
+					//cercaSequenza(parziale, livello, mese);
 					
 				}
 				
@@ -177,10 +179,12 @@ public class Model {
 		
 		int costo = 0;
 		
-		for(int i=1; i<parziale.size(); i++) {
+		
+		for(int i=0; i<parziale.size(); i++) {
 			
-			if(!parziale.get(i).equals(parziale.get(i-1)))
-				costo += COST;
+			if(i>0)
+				if(!parziale.get(i).equals(parziale.get(i-1)))
+					costo += COST;
 			
 			costo += parziale.get(i).getRilevamenti().get(i).getUmidita();
 			
